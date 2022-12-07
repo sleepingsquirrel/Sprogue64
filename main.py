@@ -1,9 +1,10 @@
 import pygame
 from pygame.locals import *
+from gl import renderer
 
 class window:
     def __init__(self):
-        pygame.display.set_mode((500,500), OPENGL|DOUBLEBUF|RESIZABLE)
+        self.gl = renderer()
         self.run()
     
     def run(self):
