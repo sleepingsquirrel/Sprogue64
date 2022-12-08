@@ -5,9 +5,9 @@ import moderngl as mgl
 from PIL import Image
 import numpy as np
 from pygame.locals import *
-from math import floor, shaders_storage
+from math import floor
+from shaders import shader_storage
 import math
-from shaders import shader
 
 class renderer:
     def __init__(self, parent):
@@ -15,11 +15,19 @@ class renderer:
         self.parent = parent
         window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE)
         self.ctx = mgl.create_context()
+        self.shaders = shader_storage()
+        self.make_shaders()
+    
+    def render(self):
+        self.ctx.clear(0.6,0.5,0.9)
+        self.vao.render()
     
     def make_shaders(self):
-        vertex = self.shaders.vert_vert
-        fragment = self.shaders.frag_
+        vertex = self.shaders.vert_wall
+        fragment = self.shaders.frag_wall
         self.shader = self.ctx.program(vertex_shader = vertex, fragment_shader = fragment)
+        vbo = self.ctx.buffer(np.array((-1,-1,1,1,1,-1,1,1,-1,1,-1,-1), dtype = np.float32).tobytes())
+        self.vao = self.ctx.vertex_array(self.shader, vbo, "apos")
         # self.len_atlas_loc = self.shader['len_atlas']
         # self.atlas_loc = self.shader['atlas']
         # self.scale_uniform = self.shader["scale"]
