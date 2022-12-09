@@ -7,6 +7,7 @@ import numpy as np
 from pygame.locals import *
 from math import floor
 from shaders import shader_storage
+from sdf import signed_distance_function
 import math
 
 class renderer:
@@ -15,12 +16,18 @@ class renderer:
         self.parent = parent
         window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE)
         self.ctx = mgl.create_context()
+        self.sdf = signed_distance_function(self)
         self.shaders = shader_storage()
         self.make_shaders()
+        self.get_walls()
     
     def render(self):
         self.ctx.clear(0.6,0.5,0.9)
         self.vao.render()
+
+    def get_walls(self):
+        walls = self.sdf()
+        self.player_tex = self.ctx.texture((500,1), 4,walls.tobytes())
     
     def make_shaders(self):
         vertex = self.shaders.vert_wall
