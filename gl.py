@@ -19,15 +19,19 @@ class renderer:
         self.sdf = signed_distance_function(self)
         self.shaders = shader_storage()
         self.make_shaders()
-        self.get_walls()
+        
     
     def render(self):
-        self.ctx.clear(0.6,0.5,0.9)
+        self.get_walls()
         self.vao.render()
 
     def get_walls(self):
         walls = self.sdf()
-        self.player_tex = self.ctx.texture((500,1), 4,walls.tobytes())
+        self.tex = self.ctx.texture((500,1), 4,walls.tobytes())
+        self.tex.filter = mgl.NEAREST, mgl.NEAREST
+        self.tex.use(0)
+        self.shader["atlas"] = 0
+
     
     def make_shaders(self):
         vertex = self.shaders.vert_wall

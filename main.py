@@ -7,9 +7,11 @@ class window:
     def __init__(self):
         self.gl = renderer(self)
         self.run()
+
+    def make_world(self):
+        pass
     
     def run(self):
-        
         self.f = 0
         self.running = True
         while self.running:

@@ -14,11 +14,21 @@ class shader_storage:
     frag_wall = '''
     
     #version 330
+    #define W 500
+    #define H 500
     out vec4 FragColor;
     in vec2 tex;
+    uniform sampler2D atlas;
     void main()
     {
-        FragColor = vec4(tex,1,1);
+        //FragColor = vec4(texture(atlas, tex));
+        vec4 dat = texture(atlas, tex);
+        if (dat.r / 2 > abs(tex.y - 0.5)) {
+            FragColor = vec4(0.5,0.5,0.5,1.0);
+        }
+        else {
+            FragColor = vec4(1.0,1.0,1.0,1.0);
+        }
     } 
     
     '''
