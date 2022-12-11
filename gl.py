@@ -14,7 +14,7 @@ class renderer:
     def __init__(self, parent):
         pygame.init()
         self.parent = parent
-        window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE)
+        window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=True)
         self.ctx = mgl.create_context()
         self.sdf = signed_distance_function(self)
         self.shaders = shader_storage()
@@ -28,7 +28,10 @@ class renderer:
     def get_walls(self):
         walls = self.sdf()
         self.tex = self.ctx.texture((500,1), 4,walls.tobytes())
-        self.tex.filter = mgl.NEAREST, mgl.NEAREST
+        # self.tex.filter = mgl.NEAREST, mgl.NEAREST
+        self.tex.repeat_x = False
+        # print(self.tex.samples)
+        # self.tex.anisotropy = 16.0
         self.tex.use(0)
         self.shader["atlas"] = 0
 
