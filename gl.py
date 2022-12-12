@@ -9,6 +9,7 @@ from math import floor
 from shaders import shader_storage
 from sdf import signed_distance_function
 import math
+import platform
 
 class renderer:
     def __init__(self, parent):

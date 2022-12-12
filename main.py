@@ -1,15 +1,14 @@
 import pygame
 from pygame.locals import *
 from gl import renderer
+from world import wall
 
 class window:
     display = (500,500)
+    fov = 60
     def __init__(self):
         self.gl = renderer(self)
         self.run()
-
-    def make_world(self):
-        pass
     
     def run(self):
         self.f = 0
