@@ -32,4 +32,5 @@ class world:
                     if ident == 0:
                         break
                     chunk.append(wall(ident, *file.read(5)))
+                self.map[(pos)]
                     
