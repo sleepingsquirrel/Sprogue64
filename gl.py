@@ -17,7 +17,7 @@ class renderer:
         self.parent = parent
         window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=True)
         self.ctx = mgl.create_context()
-        self.sdf = signed_distance_function(self)
+        self.sdf = signed_distance_function(self.parent)
         self.shaders = shader_storage()
         self.make_shaders()
         

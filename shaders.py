@@ -12,7 +12,6 @@ class shader_storage:
     }
     '''
     frag_wall = '''
-    
     #version 330
     #define W 500
     #define H 500
