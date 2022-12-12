@@ -3,7 +3,7 @@ from pygame.locals import *
 from gl import renderer
 
 class window:
-    display = (512,500)
+    display = (500,500)
     def __init__(self):
         self.gl = renderer(self)
         self.run()

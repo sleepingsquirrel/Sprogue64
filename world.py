@@ -15,6 +15,7 @@ class world:
     def __init__(self):
         self.map = {}
         self.load_from_file()
+
     def get_chunk(self, x,y):
         if (x,y) in self.map:
             return self.map[(x,y)]
@@ -28,4 +29,7 @@ class world:
                 chunk = []
                 while True:
                     ident = file.read(1)[0]
+                    if ident == 0:
+                        break
+                    chunk.append(wall(ident, *file.read(5)))
                     

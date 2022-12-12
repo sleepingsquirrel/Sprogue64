@@ -10,4 +10,4 @@ class signed_distance_function:
     
     def __call__(self):
         self.sdf()
-        return np.array([floor(i//4) for i in range(500 * 4)], dtype="int8")
+        return np.array([randint(0, 255) for i in range(500 * 4)], dtype="int8")
