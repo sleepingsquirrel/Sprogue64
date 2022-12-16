@@ -1,6 +1,6 @@
 from random import randint
 import numpy as np
-from math import floor,cos,sin,dist
+from math import floor,cos,sin,sqrt
 
 #gives data of the height of walls as texture
 class signed_distance_function:
@@ -10,10 +10,11 @@ class signed_distance_function:
         self.p = self.parent.player
         self.fov = self.parent.fov
 
-    
+    def length(self,ax,ay,bx,by):
+        return sqrt((ax - bx) ** 2 + (ay - by) ** 2)
 
-    def circle(self, x1,y1,x2,y2,r):
-        dist((x1,y1),(x2,y2)) - r
+    def circle(self,ax, ay, bx, by, r):
+        return self.length(ax,ay,bx,by) - r
 
     def sdf(self):
         out = np.zeros((500,4), dtype="uint8")
@@ -27,7 +28,7 @@ class signed_distance_function:
 
             for depth in range(255):
                 d = min(abs(ry),abs(rx)) 
-                d = min(d, abs(self.circle(ry,rx,4,4,1)))
+                # d = min(d, abs(self.circle(ry,rx,4,4,1)))
 
                 if -0.001 < d and d < 0.001:
                     out[i][0] = min(round((40 / distance / cos(rrot - self.p.rot))), 255) 
@@ -35,11 +36,12 @@ class signed_distance_function:
                     # out[i][2]
                     # out[i][3]
                     break
-                # if d > 10:
-                #     break
+                if d > 10:
+                    break
                 rx += sin(rrot) * d
                 ry += cos(rrot) * d
                 distance += d
+                # print(distance)
         out.dtype = "float32"
         return out
 

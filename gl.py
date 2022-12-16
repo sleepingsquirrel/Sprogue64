@@ -10,6 +10,7 @@ from shaders import shader_storage
 from sdf import signed_distance_function
 import math
 import platform
+import sys
 
 #class that uses openGL
 class renderer:
@@ -18,7 +19,7 @@ class renderer:
         pygame.init()
         self.parent = parent
         #create pygame window
-        window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=True)
+        window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=sys.platform == "linux")
         #start modern gl
         self.ctx = mgl.create_context()
         #init shaders and sdf
@@ -27,7 +28,6 @@ class renderer:
         #pull shaders from shader storage and compile them
         self.make_shaders()
         
-    
     def render(self):
         self.get_walls()
         self.vao.render()
