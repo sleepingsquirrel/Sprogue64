@@ -37,7 +37,7 @@ class window:
                 if event.type == KEYUP:
                     if event.key in self.keys:
                         self.keys[event.key] = False
-            speed = 0.101
+            speed = 0.0501
             if(self.keys[K_w]):
                 self.player.x += sin(self.player.rot) * speed
                 self.player.y += cos(self.player.rot) * speed

@@ -22,7 +22,7 @@ class signed_distance_function:
         for i in range(500):
             rrot = self.p.rot - self.fov / 2 + self.fov * (i/500)
             rx = self.p.x
-            ry = self.p.x
+            ry = self.p.y
             distance = 0
             d = 0
 
@@ -31,7 +31,7 @@ class signed_distance_function:
                 # d = min(d, abs(self.circle(ry,rx,4,4,1)))
 
                 if -0.001 < d and d < 0.001:
-                    out[i][0] = min(round((40 / distance / cos(rrot - self.p.rot))), 255) 
+                    out[i][0] = min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255) 
                     out[i][1] = depth
                     # out[i][2]
                     # out[i][3]
