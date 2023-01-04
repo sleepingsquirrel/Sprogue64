@@ -9,7 +9,11 @@ class wall:
         self.w = w
         self.h = h
         
-
+# first byte is either 0 (end) or anything else (continues)
+# next two, chunk x, chunk y
+# next byte is object id
+# next five bytes, rot, xpos, ypos, width, height
+# repeat from object id until id is 0
 
 class world:
     def __init__(self):
