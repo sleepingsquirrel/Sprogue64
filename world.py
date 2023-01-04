@@ -8,6 +8,7 @@ class wall:
         self.y = y
         self.w = w
         self.h = h
+
         
 # first byte is either 0 (end) or anything else (continues)
 # next two, chunk x, chunk y
@@ -33,4 +34,15 @@ class world:
                         break
                     chunk.append(wall(ident, *file.read(5)))
                 self.map[pos[0],pos[1]] = chunk
-                    
+    
+    # def write_to_file(self):
+    #     with open("world/world.bin") as file:
+    #         for x in range(255):
+    #             for y in range(255):
+    #                 for i in self.map[x][y]:
+    #                     wall_to_bytes(i)
+
+    # def add_wall(self, info):
+    #     z = wall(info[3], info[4], info[5], info[6], info[7], info[8])
+    #     self.map[info[1]][info[2]].append(z)
+

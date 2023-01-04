@@ -1,10 +1,14 @@
-from world import *
+# from world import *
 
-def maker():
-    id = input("Object Type: ").strip().lower()
-    info = input("Info: ").strip().lower().split(" ")
-        
+# def maker():
+#     adding = world()
+#     while True:
+#         try:
+#             info = input("Info: ").strip().lower().split(" ")
+#             world.add_wall(adding, info)
+#         except(EOFError):
+#             break
 
 
-if __name__ == "__main__":
-    maker()
+# if __name__ == "__main__":
+#     maker()
