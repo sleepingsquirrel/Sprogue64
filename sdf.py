@@ -16,6 +16,34 @@ class signed_distance_function:
     def circle(self,ax, ay, bx, by, r):
         return self.length(ax,ay,bx,by) - r
 
+    def rectangle(self,rx,ry,x,y,w,h):
+        #  float2 componentWiseEdgeDistance = abs(samplePosition) - halfSize;
+        # float outsideDistance = length(max(componentWiseEdgeDistance, 0));
+        # float insideDistance = min(max(componentWiseEdgeDistance.x, componentWiseEdgeDistance.y), 0);
+        # return outsideDistance + insideDistance;
+        edgedis = [abs(x) - w, abs(y) - h]
+        out = [max(i,0) for i in edgedis]
+
+
+    def getchunks(self,rx,ry):
+        world = self.w.map
+        return sum([world[rx//16 + i % 3 - 1][ry//16 + i // 3 - 1] for i in range(9)])
+
+
+    def objdis(self,obj,rx,ry):
+        if obj.type == 1:
+            return self.circle(obj.x,obj.y,rx,ry,obj.w)
+        elif obj.type == 2:
+             
+
+    def rdis(self,rx,ry): 
+        chunk = self.getchunks(rx,ry)
+        d = min([self.objdis(obj,rx,ry) for obj in chunk])
+        return d
+
+    
+
+
     def sdf(self):
         out = np.zeros((500,4), dtype="uint8")
 
@@ -27,7 +55,7 @@ class signed_distance_function:
             d = 0
 
             for depth in range(255):
-                d = min(abs(ry),abs(rx)) 
+                d = self.rdis(rx,ry)
                 # d = min(d, abs(self.circle(ry,rx,4,4,1)))
 
                 if -0.001 < d and d < 0.001:
