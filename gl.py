@@ -10,18 +10,24 @@ from shaders import shader_storage
 from sdf import signed_distance_function
 import math
 import platform
+import sys
 
+#class that uses openGL
 class renderer:
     def __init__(self, parent):
+        #start pygame
         pygame.init()
         self.parent = parent
-        window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=True)
+        #create pygame window
+        window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=sys.platform == "linux")
+        #start modern gl
         self.ctx = mgl.create_context()
+        #init shaders and sdf
         self.sdf = signed_distance_function(self.parent)
         self.shaders = shader_storage()
+        #pull shaders from shader storage and compile them
         self.make_shaders()
         
-    
     def render(self):
         self.get_walls()
         self.vao.render()
@@ -38,11 +44,15 @@ class renderer:
 
     
     def make_shaders(self):
+        #compile shaders
         vertex = self.shaders.vert_wall
         fragment = self.shaders.frag_wall
         self.shader = self.ctx.program(vertex_shader = vertex, fragment_shader = fragment)
+        #add vertex buffer
         vbo = self.ctx.buffer(np.array((-1,-1,1,1,1,-1,1,1,-1,1,-1,-1), dtype = np.float32).tobytes())
         self.vao = self.ctx.vertex_array(self.shader, vbo, "apos")
+        print('shaders: complete')
+        
         # self.len_atlas_loc = self.shader['len_atlas']
         # self.atlas_loc = self.shader['atlas']
         # self.scale_uniform = self.shader["scale"]
@@ -59,5 +69,3 @@ class renderer:
 
 
 
-        print('shaders: complete')
-        
