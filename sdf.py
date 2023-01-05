@@ -17,12 +17,20 @@ class signed_distance_function:
         return self.length(ax,ay,bx,by) - r
 
     def rectangle(self,rx,ry,x,y,w,h):
-        #  float2 componentWiseEdgeDistance = abs(samplePosition) - halfSize;
+        # float2 componentWiseEdgeDistance = abs(samplePosition) - halfSize;
         # float outsideDistance = length(max(componentWiseEdgeDistance, 0));
         # float insideDistance = min(max(componentWiseEdgeDistance.x, componentWiseEdgeDistance.y), 0);
         # return outsideDistance + insideDistance;
-        edgedis = [abs(x) - w, abs(y) - h]
-        out = [max(i,0) for i in edgedis]
+        # edgedis = [abs(x) - w, abs(y) - h]
+        # out = [max(i,0) for i in edgedis]
+        dx = abs(rx) - w/2 - x
+        dy = abs(ry) - h/2 - y
+        
+        # compute the distance from the point to the rectangle
+        outside_distance = np.linalg.norm(np.maximum(np.array([dx, dy]), 0), ord=2)
+        inside_distance = np.minimum(np.maximum(dx, dy), 0)
+        
+        return outside_distance + inside_distance
 
 
     def getchunks(self,rx,ry):
@@ -34,11 +42,16 @@ class signed_distance_function:
         if obj.type == 1:
             return self.circle(obj.x,obj.y,rx,ry,obj.w)
         elif obj.type == 2:
+            pass
              
 
     def rdis(self,rx,ry): 
-        chunk = self.getchunks(rx,ry)
-        d = min([self.objdis(obj,rx,ry) for obj in chunk])
+        # chunk = self.getchunks(rx,ry)
+        # d = min([self.objdis(obj,rx,ry) for obj in chunk])
+        d= 100000
+        
+        if rx < 10:
+            d= ry
         return d
 
     
