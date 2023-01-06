@@ -1,6 +1,6 @@
 from random import randint
 import numpy as np
-from math import floor,cos,sin,sqrt
+from math import floor,cos,sin,sqrt,hypot
 
 #gives data of the height of walls as texture
 class signed_distance_function:
@@ -10,11 +10,8 @@ class signed_distance_function:
         self.p = self.parent.player
         self.fov = self.parent.fov
 
-    def length(self,ax,ay,bx,by):
-        return sqrt((ax - bx) ** 2 + (ay - by) ** 2)
-
     def circle(self,ax, ay, bx, by, r):
-        return self.length(ax,ay,bx,by) - r
+        return hypot(ax,ay,bx,by) - r
 
     def rectangle(self,rx,ry,x,y,w,h):
         # float2 componentWiseEdgeDistance = abs(samplePosition) - halfSize;
@@ -31,6 +28,10 @@ class signed_distance_function:
         inside_distance = np.minimum(np.maximum(dx, dy), 0)
         
         return outside_distance + inside_distance
+    
+    def line(self,rx,ry,w,cx,cy,l):
+        max(abs(rx-ry*w),self.circle(rx,ry,cx,cy,l/2))
+
 
 
     def getchunks(self,rx,ry):
@@ -48,10 +49,12 @@ class signed_distance_function:
     def rdis(self,rx,ry): 
         # chunk = self.getchunks(rx,ry)
         # d = min([self.objdis(obj,rx,ry) for obj in chunk])
-        d= 100000
+        # d= 100000
+        d = abs(rx*ry) + 0.1
+        # d = max(abs(rx+ry),self.circle(rx,ry,0,0,5))
+        # d= max(abs(ry),self.circle(rx,ry,0,0,5 + sin(self.parent.f/100)))
+        # d = min(d,ry-rx - 5)
         
-        if rx < 10:
-            d= ry
         return d
 
     

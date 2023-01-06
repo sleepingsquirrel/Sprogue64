@@ -23,10 +23,10 @@ class window:
     
     def run(self):
         #frame count
-        f = 0
+        self.f = 0
         self.running = True
         while self.running:
-            f += 1
+            self.f += 1
             #make the x button quit out of the window
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -55,8 +55,8 @@ class window:
             #update screen
             pygame.display.flip()
             self.clock.tick(60)
-            if not f % 60:
-                print(self.clock.get_fps())
+            if not self.f % 60:
+                print(self.clock.get_fps(),self.player.rot)
 
 
 if __name__ == "__main__":
