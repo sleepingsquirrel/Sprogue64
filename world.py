@@ -1,4 +1,5 @@
 import numpy as np
+import csv
 
 class wall:
     def __init__(self,wtype,rot,x,y,w,h):
@@ -35,14 +36,17 @@ class world:
                     chunk.append(wall(ident, *file.read(5)))
                 self.map[pos[0],pos[1]] = chunk
     
-    # def write_to_file(self):
-    #     with open("world/world.bin") as file:
-    #         for x in range(255):
-    #             for y in range(255):
-    #                 for i in self.map[x][y]:
-    #                     wall_to_bytes(i)
+    def csv_to_bin(self):
+        data = self.load_csv()
 
-    # def add_wall(self, info):
-    #     z = wall(info[3], info[4], info[5], info[6], info[7], info[8])
-    #     self.map[info[1]][info[2]].append(z)
+    #for internal use only, use csv_to_bin instead
+    def load_csv(self):
+        with open('map.csv') as file:
+            reader = csv.DictReader(file)
+            for i in reader:
+                print(i)
 
+
+if __name__ == "__main__":
+    test = new world()
+    test.load_csv()
