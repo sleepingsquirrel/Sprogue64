@@ -45,7 +45,7 @@ class window:
                 self.player.rot -= 0.1001
             if(self.keys[K_s]):
                 self.player.x -= sin(self.player.rot) * speed
-                self.player.y += cos(self.player.rot) * speed
+                self.player.y -= cos(self.player.rot) * speed
             if(self.keys[K_d]):
                 self.player.rot += 0.1001
                 

@@ -12,25 +12,15 @@ class signed_distance_function:
 
     def circle(self,ax, ay, bx, by, r):
         return hypot(ax,ay,bx,by) - r
-
-    def rectangle(self,rx,ry,x,y,w,h):
-        # float2 componentWiseEdgeDistance = abs(samplePosition) - halfSize;
-        # float outsideDistance = length(max(componentWiseEdgeDistance, 0));
-        # float insideDistance = min(max(componentWiseEdgeDistance.x, componentWiseEdgeDistance.y), 0);
-        # return outsideDistance + insideDistance;
-        # edgedis = [abs(x) - w, abs(y) - h]
-        # out = [max(i,0) for i in edgedis]
-        dx = abs(rx) - w/2 - x
-        dy = abs(ry) - h/2 - y
-        
-        # compute the distance from the point to the rectangle
-        outside_distance = np.linalg.norm(np.maximum(np.array([dx, dy]), 0), ord=2)
-        inside_distance = np.minimum(np.maximum(dx, dy), 0)
-        
-        return outside_distance + inside_distance
     
-    def line(self,rx,ry,w,cx,cy,l):
-        max(abs(rx-ry*w),self.circle(rx,ry,cx,cy,l/2))
+    def semi_circle(self,rx,ry,cx,cy,r,l):
+        max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
+
+    def line(self,pos,ishorizontal,c,l):
+        cpos = [0,0]
+        cpos[int(ishorizontal)] = pos[int(ishorizontal)]
+        cpos[int(not ishorizontal)] = c
+        max(abs(pos[int(ishorizontal)]),self.circle(pos[0],[pos[1]],cpos[0],cpos[1],l/2))
 
 
 
@@ -41,17 +31,21 @@ class signed_distance_function:
 
     def objdis(self,obj,rx,ry):
         if obj.type == 1:
-            return self.circle(obj.x,obj.y,rx,ry,obj.w)
+            return self.circle(obj.x,obj.y,obj.w)
         elif obj.type == 2:
-            pass
+            return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
+        elif obj.type == 3:
+            return self.semi_circle(rx,ry,obj.x,obj.y,obj.r,obj.l)
              
 
     def rdis(self,rx,ry): 
         # chunk = self.getchunks(rx,ry)
         # d = min([self.objdis(obj,rx,ry) for obj in chunk])
         # d= 100000
-        d = abs(rx*ry) + 0.1
-        # d = max(abs(rx+ry),self.circle(rx,ry,0,0,5))
+        # d = abs(rx*ry) + 0.1
+        d = min([
+            
+            ])
         # d= max(abs(ry),self.circle(rx,ry,0,0,5 + sin(self.parent.f/100)))
         # d = min(d,ry-rx - 5)
         
@@ -74,7 +68,7 @@ class signed_distance_function:
                 d = self.rdis(rx,ry)
                 # d = min(d, abs(self.circle(ry,rx,4,4,1)))
 
-                if -0.001 < d and d < 0.001:
+                if abs(d) < 0.001:
                     out[i][0] = min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255) 
                     out[i][1] = depth
                     # out[i][2]

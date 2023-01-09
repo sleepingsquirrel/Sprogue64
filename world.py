@@ -48,5 +48,5 @@ class world:
 
 
 if __name__ == "__main__":
-    test = new world()
+    test = world()
     test.load_csv()
