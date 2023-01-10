@@ -18,6 +18,7 @@ class wall:
 # repeat from object id until id is 0
 
 class world:
+    chunk_size = 16
     def __init__(self):
         self.map = [[[] for i in range(255)] for _ in range(255)]
         self.load_from_file()

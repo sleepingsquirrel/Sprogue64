@@ -26,8 +26,10 @@ class signed_distance_function:
 
     def getchunks(self,rx,ry):
         world = self.w.map
-        return sum([world[rx//16 + i % 3 - 1][ry//16 + i // 3 - 1] for i in range(9)])
-
+        # try:
+        return [tuple(world[floor(rx//16 + i % 3 - 1)][floor(ry//16 + i // 3 - 1)]) for i in range(9)]
+        # except:
+        #     print(rx,ry)
 
     def objdis(self,obj,rx,ry):
         if obj.type == 1:
@@ -39,16 +41,9 @@ class signed_distance_function:
              
 
     def rdis(self,rx,ry): 
-        # chunk = self.getchunks(rx,ry)
-        # d = min([self.objdis(obj,rx,ry) for obj in chunk])
-        # d= 100000
-        # d = abs(rx*ry) + 0.1
-        d = min([
-            
-            ])
-        # d= max(abs(ry),self.circle(rx,ry,0,0,5 + sin(self.parent.f/100)))
-        # d = min(d,ry-rx - 5)
-        
+        chunk = self.getchunks(rx,ry)
+        d = min(rx-self.parent.f / 1000,ry,self.w.chunk_size)
+        # return min(min([min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]),d)
         return d
 
     
