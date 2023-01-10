@@ -39,13 +39,17 @@ class world:
     
     def csv_to_bin(self):
         data = self.load_csv()
+        
 
     #for internal use only, use csv_to_bin instead
     def load_csv(self):
+        shapes = []
         with open('map.csv') as file:
             reader = csv.DictReader(file)
             for i in reader:
-                print(i)
+                current = wall(i.id, i.r, i.x, i.y, i.w, i.h)
+                shapes.append(current)
+            return shapes
 
 
 if __name__ == "__main__":
