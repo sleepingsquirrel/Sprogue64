@@ -27,7 +27,7 @@ class signed_distance_function:
     def getchunks(self,rx,ry):
         world = self.w.map
         # try:
-        return [tuple(world[floor(rx//16 + i % 3 - 1)][floor(ry//16 + i // 3 - 1)]) for i in range(9)]
+        return [world[floor(rx//16 + i % 3 - 1)][floor(ry//16 + i // 3 - 1)] for i in range(9)]
         # except:
         #     print(rx,ry)
 
@@ -42,8 +42,8 @@ class signed_distance_function:
 
     def rdis(self,rx,ry): 
         chunk = self.getchunks(rx,ry)
-        d = min(rx-self.parent.f / 1000,ry,self.w.chunk_size)
-        # return min(min([min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]),d)
+        d = min(rx,ry)
+        d = min(min([min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]),d)
         return d
 
     
@@ -59,7 +59,7 @@ class signed_distance_function:
             distance = 0
             d = 0
 
-            for depth in range(255):
+            for depth in range(200):
                 d = self.rdis(rx,ry)
                 # d = min(d, abs(self.circle(ry,rx,4,4,1)))
 

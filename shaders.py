@@ -17,7 +17,23 @@ class shader_storage:
     #define H 500
     out vec4 FragColor;
     in vec2 tex;
+    uniform vec2 ppos;
+    uniform float rot;
+    uniform int w;
+    uniform int h;
     uniform sampler2D atlas;
+    const float fov = 1.0;
+
+    vec2 hash22(vec2 p)
+    {
+        p = p*mat2(127.1,311.7,269.5,183.3);
+        p = -1.0 + 2.0 * fract(sin(p)*43758.5453123);
+        return sin(p*6.283);
+    }
+    bool xor(bool a, bool b) {
+        if ((a && b) || (!a && !b)) return false;
+        else return true;
+    }
     void main()
     {
         //FragColor = vec4(texture(atlas, tex));
@@ -30,7 +46,12 @@ class shader_storage:
                 FragColor = vec4(1.0,1.0,1.0,1.0);
             }
             else{
-                FragColor = vec4(0.0,0.0,0.0,1.0);
+                vec2 rand = hash22(vec2(round((tex.x+rot)*w)/w,round((tex.y)*h)/h));
+                vec3 col = vec3(0);
+                if (rand.x > 0.99){
+                    col = vec3(rand.y);
+                }
+                FragColor = vec4(vec3(col),1.0);
             }
            
         }
