@@ -42,7 +42,7 @@ class renderer:
         self.tex.use(0)
         self.shader["atlas"] = 0
         # self.shader["ppos"] = tuple([self.parent.player.x, self.parent.player.y])
-        self.shader["rot"] = math.sin(self.parent.f/100)
+        self.shader["rot"] = self.parent.player.rot
         self.shader["w"] = int(self.parent.display[0] * 1.1)
         self.shader["h"] = int(self.parent.display[1] * 1.1)
 

@@ -37,7 +37,7 @@ class signed_distance_function:
         elif obj.type == 2:
             return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
         elif obj.type == 3:
-            return self.semi_circle(rx,ry,obj.x,obj.y,obj.r,obj.l)
+            return self.semi_circle(rx,ry,obj.x,obj.y,obj.r,obj.w)
              
 
     def rdis(self,rx,ry): 
