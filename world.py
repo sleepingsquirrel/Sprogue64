@@ -1,5 +1,6 @@
 import numpy as np
 import csv
+import pickle
 
 class wall:
     def __init__(self,wtype,rot,x,y,w,h):
@@ -42,14 +43,8 @@ class world:
         
 
     #for internal use only, use csv_to_bin instead
-    def load_csv(self):
-        shapes = []
-        with open('map.csv') as file:
-            reader = csv.DictReader(file)
-            for i in reader:
-                current = wall(i.id, i.r, i.x, i.y, i.w, i.h)
-                shapes.append(current)
-            return shapes
+    def load_level(self,name = "level.spr"):
+        retrieved_data = pickle.load(name)
 
 
 if __name__ == "__main__":
