@@ -16,13 +16,13 @@ def load_csv(map):
         return shapes
 
 def make_shape(obj):
-    match obj.id:
+    match obj["id"]:
         case 1:
-            return circle_convert(obj.x,obj.y,obj.w)
+            return circle_convert(obj["x"],obj["y"],obj["w"])
         case 2:
-            return line_convert(obj.x,obj.y,obj.w,obj.h)
+            return line_convert(obj["x"],obj["y"],obj["w"],obj["h"])
         case 3:
-            return semicircle_convert(obj.x,obj.y,obj.w,obj.h,obj.rot)
+            return semicircle_convert(obj["x"],obj["y"],obj["w"],obj["h"],obj["rot"])
 
 def semicircle_convert(x1,y1,x2,y2,r):
     #get middle
