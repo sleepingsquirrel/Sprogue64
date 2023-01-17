@@ -40,8 +40,4 @@ def line_convert(x1,y1,x2,y2):
 
 def circle_convert(x,y,r):
     return wall(1,0,x,y,r,0)
-
-
-
-print(__name__)
 preload()
