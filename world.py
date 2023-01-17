@@ -10,6 +10,7 @@ class wall:
         self.y = y
         self.w = w
         self.h = h
+        self.scale = 16
 
         
 # first byte is either 0 (end) or anything else (continues)
@@ -45,6 +46,10 @@ class world:
     #for internal use only, use csv_to_bin instead
     def load_level(self,name = "level.spr"):
         retrieved_data = pickle.load(name)
+        for i in retrieved_data:
+            assert i.isinstance(wall)
+            pos = [i.x / self.scale, i.y / self.scale]
+            self.map[pos[0],pos[1]] = i
 
 
 if __name__ == "__main__":
