@@ -26,24 +26,36 @@ class signed_distance_function:
 
     def getchunks(self,rx,ry):
         world = self.w.map
+        scale = self.w.scale
+        rx = int(floor(rx))
+        ry = int(floor(ry))
         # try:
-        return [world[floor(rx//16 + i % 3 - 1)][floor(ry//16 + i // 3 - 1)] for i in range(9)]
+        return world[rx//scale-1:rx//scale+1]
+        # [ry//scale-1:ry//scale+2]
         # except:
         #     print(rx,ry)
 
     def objdis(self,obj,rx,ry):
-        if obj.type == 1:
-            return self.circle(obj.x,obj.y,obj.w)
-        elif obj.type == 2:
-            return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
-        elif obj.type == 3:
-            return self.semi_circle(rx,ry,obj.x,obj.y,obj.r,obj.w)
-             
+        # if obj.type == 1:
+        #     return self.circle(obj.x,obj.y,obj.w)x
+        # elif obj.type == 2:
+        #     return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
+        # else:
+        if obj.type == 3:
+            return self.semi_circle(rx,ry,obj.x,obj.y,obj.rot,obj.w)
+        else:
+            return 10000
+                         
 
     def rdis(self,rx,ry): 
         chunk = self.getchunks(rx,ry)
-        d = min(rx,ry)
-        d = min(min([min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]),d)
+        # print(chunk)
+        d = min(rx,ry,self.w.scale)
+        # print([5] + [100])
+        # beans = [min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]
+        if chunk != []:
+            print(chunk)
+        # d = min(min(beans),d)
         return d
 
     
