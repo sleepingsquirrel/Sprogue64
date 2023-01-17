@@ -37,21 +37,21 @@ class world:
                     chunk.append(wall(ident, *file.read(5)))
                 self.map[pos[0],pos[1]] = chunk
     
-    def csv_to_bin(self):
-        data = self.load_csv()
+    # def csv_to_bin(self):
+    #     data = self.load_csv()
         
 
-    #for internal use only, use csv_to_bin instead
-    def load_csv(self):
-        shapes = []
-        with open('map.csv') as file:
-            reader = csv.DictReader(file)
-            for i in reader:
-                current = wall(i.id, i.r, i.x, i.y, i.w, i.h)
-                shapes.append(current)
-            return shapes
+    # #for internal use only, use csv_to_bin instead
+    # def load_csv(self):
+    #     shapes = []
+    #     with open('map.csv') as file:
+    #         reader = csv.DictReader(file)
+    #         for i in reader:
+    #             current = wall(i.id, i.r, i.x, i.y, i.w, i.h)
+    #             shapes.append(current)
+    #         return shapes
 
 
-if __name__ == "__main__":
-    test = world()
-    test.load_csv()
+# if __name__ == "__main__":
+#     test = world()
+#     test.load_csv()
