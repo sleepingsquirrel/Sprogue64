@@ -15,7 +15,8 @@ class signed_distance_function:
         return hypot(ax,ay,bx,by) - r
     
     def semi_circle(self,rx,ry,cx,cy,r,l):
-        return max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
+        return self.circle(rx,ry,cx,cy,l)
+        max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
 
     def line(self,pos,ishorizontal,c,l):
         cpos = [0,0]
@@ -25,22 +26,32 @@ class signed_distance_function:
 
 
 
-    def getchunks(self,rx,ry):
-        world = self.w.map
-        scale = self.w.scale
-        rx = int(floor(rx))
-        ry = int(floor(ry))
+    # def getchunks(self,rx,ry):
+    #     world = self.w.map
+    #     scale = self.w.scale
+    #     rx = int(floor(rx))
+    #     ry = int(floor(ry))
         # try:
         # return sum([world[rx//16 + i % 3 - 1][ry//16 + i // 3 - 1] for i in range(9)])
         # return world[0][0] 
-        return [world[rx+i-1][ry//scale-1:ry//scale+1] for i in range(3)]
+        # for x in range(3):
+        #     for y in range(3):
+        #             [min(objdis)world[max(rx//scale+x-1,0)][max(rx//scale+y-1,0)]]
 
-        return chunks
+        # try:
+        #     return [world[max(rx+i-1,0)][max(ry//scale-1,0):max(ry//scale+1,255)] for i in range(3)]
+        # except:
+        #     print(rx//scale,ry//scale)
         # [ry//scale-1:ry//scale+2]
         # except:
         #     print(rx,ry)
 
     def objdis(self,obj,rx,ry):
+        # print("BANANA MODE")
+        world = self.w.map
+        scale = self.w.scale
+        rx = int(floor(rx))
+        ry = int(floor(ry))
         # if obj.type == 1:
         #     return self.circle(obj.x,obj.y,obj.w)x
         # elif obj.type == 2:
@@ -53,9 +64,17 @@ class signed_distance_function:
                          
 
     def rdis(self,rx,ry): 
-        chunks = self.getchunks(rx,ry)
         # print(chunk)
-        d = min(rx,ry,self.w.scale)
+        world = self.w.map
+        scale = self.w.scale
+        d = min(rx,ry,self.w.scale,abs(rx-15),abs(ry-15))
+        # print(world[0][0])
+        d = min(d,self.objdis(world[0][0][0],rx,ry))
+        # for x in range(3):
+        #     for y in range(3):
+        #         a = [self.objdis(i,rx,ry) for i in world[max(floor(rx)//scale+x-1,0)][max(floor(rx)//scale+y-1,0)]]
+        #         if a:
+        #             d = min(d,min(a))
         # print([5] + [100])
         # beans = [min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]
         # if chunk != []:
@@ -63,22 +82,20 @@ class signed_distance_function:
 
 
         #to do make function that crawls array to find objs
-        mins = [100000,100000,100000]
-        try:
-            if chunks[0]:
-                mins[0] = min(self.objdis(i,rx,ry) for i in chunks[0])
-            if chunks[1]:   
-                mins[1] = min(self.objdis(i,rx,ry) for i in chunks[1])
-            if chunks[2]:
-                mins[2] = min(self.objdis(i,rx,ry) for i in chunks[2])
-            d = min(d,min(mins))
-        except:
-            print(chunks[0])
+
 
         return d
 
     
-
+    def min_array(self,lis):
+        mind = 10000
+        for arr in lis:
+            if arr:
+                if type(arr) == type([]):
+                    mind = min(mind,self.min_array(arr))
+                else:
+                    return min([self.objdis(i) for i in lis])
+        return mind
 
     def sdf(self):
         out = np.zeros((500,4), dtype="uint8")
