@@ -1,6 +1,7 @@
 import numpy as np
 import csv
 import pickle
+from math import floor
 
 class wall:
     def __init__(self,wtype,rot,x,y,w,h):
@@ -10,7 +11,7 @@ class wall:
         self.y = y
         self.w = w
         self.h = h
-        self.scale = 16
+        
 
         
 # first byte is either 0 (end) or anything else (continues)
@@ -23,7 +24,8 @@ class world:
     chunk_size = 16
     def __init__(self):
         self.map = [[[] for i in range(255)] for _ in range(255)]
-        self.load_from_file()
+        self.scale = 128
+        self.load_level()
 
     def load_from_file(self):
         with open("world/world.bin") as file:
@@ -37,7 +39,7 @@ class world:
                     if ident == 0:
                         break
                     chunk.append(wall(ident, *file.read(5)))
-                self.map[pos[0],pos[1]] = chunk
+                self.map[pos[0],pos[1]].append(chunk)
     
     # def csv_to_bin(self):
     #     data = self.load_csv()
@@ -45,11 +47,15 @@ class world:
 
     #for internal use only, use csv_to_bin instead
     def load_level(self,name = "level.spr"):
-        retrieved_data = pickle.load(name)
-        for i in retrieved_data:
-            assert i.isinstance(wall)
-            pos = [i.x / self.scale, i.y / self.scale]
-            self.map[pos[0],pos[1]] = i
+        with open(name, "rb") as level:
+            retrieved_data = pickle.load(level)
+            # print(retrieved_data)
+            for i in retrieved_data:
+                assert type(i) == wall
+                x = floor(i.x / self.scale)
+                y = floor(i.y / self.scale)
+                self.map[x][y].append(i)
+                print(x,y)
 
 
 # if __name__ == "__main__":
