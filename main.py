@@ -45,7 +45,7 @@ class window:
                 self.player.rot -= 0.1001
             if(self.keys[K_s]):
                 self.player.x -= sin(self.player.rot) * speed
-                self.player.y += cos(self.player.rot) * speed
+                self.player.y -= cos(self.player.rot) * speed
             if(self.keys[K_d]):
                 self.player.rot += 0.1001
                 
@@ -56,7 +56,7 @@ class window:
             pygame.display.flip()
             self.clock.tick(60)
             if not self.f % 60:
-                print(self.clock.get_fps(),self.player.rot)
+                print(self.clock.get_fps(),self.player.x//16,self.player.y//16)
 
 
 if __name__ == "__main__":

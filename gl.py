@@ -41,6 +41,10 @@ class renderer:
         # self.tex.anisotropy = 16.0
         self.tex.use(0)
         self.shader["atlas"] = 0
+        # self.shader["ppos"] = tuple([self.parent.player.x, self.parent.player.y])
+        self.shader["rot"] = self.parent.player.rot
+        self.shader["w"] = int(self.parent.display[0] * 1.1)
+        self.shader["h"] = int(self.parent.display[1] * 1.1)
 
     
     def make_shaders(self):
