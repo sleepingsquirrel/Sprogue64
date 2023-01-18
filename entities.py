@@ -1,3 +1,4 @@
+from math import sin, cos
 
 class entity:
     def __init__(self, sprite, x, y, w, h):
@@ -11,4 +12,5 @@ class entity:
         pass
 
     def move(self, v, dir):
-        pass
+        self.x += cos(dir) * v
+        self.y += sin(dir) * v
