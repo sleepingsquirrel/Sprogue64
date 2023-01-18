@@ -1,6 +1,7 @@
 from random import randint
 import numpy as np
 from math import floor,cos,sin,sqrt,hypot
+import numpy as np
 
 #gives data of the height of walls as texture
 class signed_distance_function:
@@ -14,7 +15,7 @@ class signed_distance_function:
         return hypot(ax,ay,bx,by) - r
     
     def semi_circle(self,rx,ry,cx,cy,r,l):
-        max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
+        return max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
 
     def line(self,pos,ishorizontal,c,l):
         cpos = [0,0]
@@ -30,7 +31,11 @@ class signed_distance_function:
         rx = int(floor(rx))
         ry = int(floor(ry))
         # try:
-        return world[rx//scale-1:rx//scale+1]
+        # return sum([world[rx//16 + i % 3 - 1][ry//16 + i // 3 - 1] for i in range(9)])
+        # return world[0][0] 
+        return [world[rx+i-1][ry//scale-1:ry//scale+1] for i in range(3)]
+
+        return chunks
         # [ry//scale-1:ry//scale+2]
         # except:
         #     print(rx,ry)
@@ -48,14 +53,28 @@ class signed_distance_function:
                          
 
     def rdis(self,rx,ry): 
-        chunk = self.getchunks(rx,ry)
+        chunks = self.getchunks(rx,ry)
         # print(chunk)
         d = min(rx,ry,self.w.scale)
         # print([5] + [100])
         # beans = [min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]
-        if chunk != []:
-            print(chunk)
-        # d = min(min(beans),d)
+        # if chunk != []:
+        #     print(chunk)
+
+
+        #to do make function that crawls array to find objs
+        mins = [100000,100000,100000]
+        try:
+            if chunks[0]:
+                mins[0] = min(self.objdis(i,rx,ry) for i in chunks[0])
+            if chunks[1]:   
+                mins[1] = min(self.objdis(i,rx,ry) for i in chunks[1])
+            if chunks[2]:
+                mins[2] = min(self.objdis(i,rx,ry) for i in chunks[2])
+            d = min(d,min(mins))
+        except:
+            print(chunks[0])
+
         return d
 
     
