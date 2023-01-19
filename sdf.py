@@ -1,6 +1,6 @@
 from random import randint
 import numpy as np
-from math import floor,cos,sin,sqrt,hypot
+from math import floor,cos,sin,sqrt
 import numpy as np
 
 #gives data of the height of walls as texture
@@ -19,8 +19,7 @@ class signed_distance_function:
         return self.length(ax,ay,bx,by) - r
     
     def semi_circle(self,rx,ry,cx,cy,r,l):
-        return self.circle(rx,ry,cx,cy,l)
-        max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
+        return max((rx - cx)*cos(r)+(ry - cy)*sin(r),self.circle(rx,ry,cx,cy,l))
 
     def line(self,pos,ishorizontal,c,l):
         cpos = [0,0]
@@ -29,11 +28,10 @@ class signed_distance_function:
         return max(abs(pos[ishorizontal]),self.circle(pos[0],pos[1],cpos[0],cpos[1],l/2))
 
     def objdis(self,obj,rx,ry):
-        # if obj.type == 1:
-        #     return self.circle(obj.x,obj.y,obj.w)x
+        if obj.type == 1:
+            return self.circle(rx,ry,obj.x,obj.y,obj.w)
         # elif obj.type == 2:
         #     return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
-        # else:
         if obj.type == 3:
             return self.semi_circle(rx,ry,obj.x,obj.y,obj.rot,obj.w)
         else:
@@ -44,9 +42,10 @@ class signed_distance_function:
         world = self.w.map
         scale = self.w.scale
         # print(chunk)
-        # d = min(rx,ry,self.w.scal,abs(rx-15),abs(ry-15))
+        # d = min(rx,ry,scale,abs(rx-15),abs(ry-15))
         # d = self.semi_circle(rx,ry,0,0,2,1)
-        # d = self.circle(rx,ry,5,5,2)
+        # d = min(d, self.semi_circle(rx,ry,5,5,1,1))
+        # d = min(d,max((rx-5)+(ry-5),self.circle(rx,ry,5,5,2)))
         d = scale
         # d = min(rx,ry,self.w.scale,abs(rx-15),abs(ry-15))
         if rx > 0 and ry >= 0:
@@ -62,7 +61,7 @@ class signed_distance_function:
                 self.map[int(rx//scale)][int(ry//scale)] = chunk
             if chunk:
                 d = min(d,min([self.objdis(i,rx,ry) for i in chunk]))
-        # d = self.semi_circle(rx,ry,5.5,5.5,10.511,0)
+        # d = self.circle(rx,ry,2,0,1)
 
 
             
