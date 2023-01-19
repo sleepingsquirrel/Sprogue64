@@ -65,7 +65,7 @@ class window:
             pygame.display.flip()
             self.clock.tick(60)
             if not self.f % 60:
-                print(self.clock.get_fps(),self.player.x//16,self.player.y//16)
+                print(self.clock.get_fps(),self.player.x,self.player.y)
 
 
 if __name__ == "__main__":
