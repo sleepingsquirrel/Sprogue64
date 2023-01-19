@@ -23,21 +23,21 @@ def load_csv(map):
 def make_shape(obj):
     match int(obj["id"]):
         case -1:
-            return semicircle_convert(float(obj["x"]),float(obj["y"]),float(obj["w"]),float(obj["h"]),float(obj["r"]))
+            return semicircle_convert(float(obj["x"])/8,float(obj["y"])/8,float(obj["w"])/8,float(obj["r"])/8)
         case 0:
-            return circle_convert(float(obj["x"]),float(obj["y"]),float(obj["w"]))
+            return circle_convert(float(obj["x"])/8,float(obj["y"])/8,float(obj["w"])/8)
         case 1:
-            return line_convert(float(obj["x"]),float(obj["y"]),float(obj["w"]),float(obj["h"])) 
+            return line_convert(float(obj["x"])/8,float(obj["y"])/8,float(obj["w"])/8,float(obj["h"])/8) 
 def length(ax,ay,bx,by):
         return sqrt((ax-bx)**2 + (ay-by)**2)
 
-def semicircle_convert(x1,y1,x2,y2,r):
+def semicircle_convert(x,y,w,r):
     #get middle
     
-    cx,cy = (x1+x2)/2,(y1+y2)/2
-    rad = abs(length(cx,cy,x1,y1))
-    print(cx,cy,rad,r)
-    return wall(3,r,cx,cy,rad,0)
+    # cx,cy = (x1+x2)/2,(y1+y2)/2
+    # rad = abs(length(cx,cy,x1,y1))
+    # print(cx,cy,rad,r)
+    return wall(3,r,x,y,w,0)
 
 def line_convert(x1,y1,x2,y2):
     is_horizontal = int((x1-x2) < (y1-y2))
