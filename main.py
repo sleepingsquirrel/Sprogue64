@@ -10,7 +10,7 @@ from entities import entity
 
 #main loop, the main class that all others are connected to
 class window:
-    keys = {K_w:False,K_a: False,K_s:False,K_d:False}
+    keys = {K_w:False,K_a: False,K_s:False,K_d:False,K_SPACE:False}
     display = (500,500)
     fov = math.pi / 2
     def __init__(self):
@@ -55,7 +55,7 @@ class window:
                 self.player.y -= cos(self.player.rot) * speed
             if(self.keys[K_d]):
                 self.player.rot += 0.1001
-            if self.keys[K_SPACE]:
+            if (self.keys[K_SPACE]):
                 self.player.shoot(entities)
                 
                 
