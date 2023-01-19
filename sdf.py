@@ -10,42 +10,28 @@ class signed_distance_function:
         self.w = self.parent.world
         self.p = self.parent.player
         self.fov = self.parent.fov
+        self.map = [[["no"] for i in range(255)] for _ in range(255)]
+
+    def length(self,ax,ay,bx,by):
+        return sqrt((ax-bx)**2 + (ay-by)**2)
 
     def circle(self,ax, ay, bx, by, r):
-        return hypot(ax,ay,bx,by) - r
+        return self.length(ax,ay,bx,by) - r
     
     def semi_circle(self,rx,ry,cx,cy,r,l):
         return max(rx*cos(r)+ry*sin(r),self.circle(rx,ry,cx,cy,l))
 
     def line(self,pos,ishorizontal,c,l):
         cpos = [0,0]
-        cpos[int(ishorizontal)] = pos[int(ishorizontal)]
+        cpos[ishorizontal] = pos[ishorizontal]
         cpos[int(not ishorizontal)] = c
-        max(abs(pos[int(ishorizontal)]),self.circle(pos[0],[pos[1]],cpos[0],cpos[1],l/2))
-
-
-
-    def getchunks(self,rx,ry):
-        world = self.w.map
-        scale = self.w.scale
-        rx = int(floor(rx))
-        ry = int(floor(ry))
-        # try:
-        # return sum([world[rx//16 + i % 3 - 1][ry//16 + i // 3 - 1] for i in range(9)])
-        # return world[0][0] 
-        return [world[rx+i-1][ry//scale-1:ry//scale+1] for i in range(3)]
-
-        return chunks
-        # [ry//scale-1:ry//scale+2]
-        # except:
-        #     print(rx,ry)
+        return max(abs(pos[ishorizontal]),self.circle(pos[0],pos[1],cpos[0],cpos[1],l/2))
 
     def objdis(self,obj,rx,ry):
-        # if obj.type == 1:
-        #     return self.circle(obj.x,obj.y,obj.w)x
-        # elif obj.type == 2:
-        #     return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
-        # else:
+        if obj.type == 1:
+            return self.circle(rx,ry,obj.x,obj.y,obj.w)
+        elif obj.type == 2:
+            return self.line([rx,ry],obj.rot,obj.x,obj.w)
         if obj.type == 3:
             return self.semi_circle(rx,ry,obj.x,obj.y,obj.rot,obj.w)
         else:
@@ -53,9 +39,32 @@ class signed_distance_function:
                          
 
     def rdis(self,rx,ry): 
-        chunks = self.getchunks(rx,ry)
+        world = self.w.map
+        scale = self.w.scale
         # print(chunk)
-        d = min(rx,ry,self.w.scale)
+        # d = min(rx,ry,self.w.scal,abs(rx-15),abs(ry-15))
+        # d = self.semi_circle(rx,ry,0,0,2,1)
+        # d = self.circle(rx,ry,5,5,2)
+        d = scale
+        # d = min(rx,ry,self.w.scale,abs(rx-15),abs(ry-15))
+        if rx > 0 and ry >= 0:
+            if self.map[int(rx//scale)][int(ry//scale)] != ["no"]:
+                chunk = self.map[int(rx//scale)][int(ry//scale)]
+            else:
+                chunk = []
+                for x in range(3):
+                    for y in range(3):
+                        for i in world[int(rx//scale+x-1)][int(ry//scale + y)]:
+                            print("guh huh")
+                            chunk.append(i)
+                self.map[int(rx//scale)][int(ry//scale)] = chunk
+            if chunk:
+                d = min(d,min([self.objdis(i,rx,ry) for i in chunk]))
+        # d = self.semi_circle(rx,ry,5.5,5.5,10.511,0)
+
+
+            
+
         # print([5] + [100])
         # beans = [min([self.objdis(obj,rx,ry) for obj in chunk[i]] + [10000]) for i in range(9)]
         # if chunk != []:
@@ -63,17 +72,7 @@ class signed_distance_function:
 
 
         #to do make function that crawls array to find objs
-        mins = [100000,100000,100000]
-        try:
-            if chunks[0]:
-                mins[0] = min(self.objdis(i,rx,ry) for i in chunks[0])
-            if chunks[1]:   
-                mins[1] = min(self.objdis(i,rx,ry) for i in chunks[1])
-            if chunks[2]:
-                mins[2] = min(self.objdis(i,rx,ry) for i in chunks[2])
-            d = min(d,min(mins))
-        except:
-            print(chunks[0])
+
 
         return d
 

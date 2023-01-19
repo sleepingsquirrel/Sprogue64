@@ -12,6 +12,7 @@ class wall:
         self.w = w
         self.h = h
         
+        
 
         
 # first byte is either 0 (end) or anything else (continues)
@@ -55,7 +56,7 @@ class world:
                 x = floor(i.x / self.scale)
                 y = floor(i.y / self.scale)
                 self.map[x][y].append(i)
-                print(x,y)
+                print(i.x,i.y)
 
 
 # if __name__ == "__main__":
