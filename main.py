@@ -6,6 +6,8 @@ from player import player
 from world import world
 import math
 from math import sin,cos
+from entities import entity
+
 #main loop, the main class that all others are connected to
 class window:
     keys = {K_w:False,K_a: False,K_s:False,K_d:False}
@@ -23,6 +25,11 @@ class window:
     
     def run(self):
         #frame count
+
+        #GET RID OF THIS LATER
+        entities = [entity(open("Sprite-0001.png"), 1, 1, 1, 1)]
+        #GET RID OF THAT LATER
+
         self.f = 0
         self.running = True
         while self.running:
@@ -48,6 +55,8 @@ class window:
                 self.player.y -= cos(self.player.rot) * speed
             if(self.keys[K_d]):
                 self.player.rot += 0.1001
+            if self.keys[K_SPACE]:
+                self.player.shoot(entities)
                 
                 
             #render screen

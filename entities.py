@@ -1,7 +1,7 @@
 from math import sin, cos
 
 class entity:
-    def __init__(self, sprite, x, y, w, h):
+    def __init__(self, sprite, x, y, w, h, radius):
         self.sprite = sprite
         self.x = x
         self.y = y
