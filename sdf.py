@@ -88,18 +88,18 @@ class signed_distance_function:
     def sdf(self):
         out = np.zeros((500,4), dtype="uint8")
 
-        for i in range(500):
-            rrot = self.p.rot - self.fov / 2 + self.fov * (i/500)
+        for i in range(200):
+            rrot = self.p.rot - self.fov / 2 + self.fov * (i/200)
             rx = self.p.x
             ry = self.p.y
             distance = 0
             d = 0
 
-            for depth in range(200):
+            for depth in range(100):
                 d = self.rdis(rx,ry)
                 # d = min(d, abs(self.circle(ry,rx,4,4,1)))
 
-                if abs(d) < 0.001:
+                if abs(d) < 0.1:
                     out[i][0] = min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255) 
                     out[i][1] = depth
                     # out[i][2]
