@@ -21,17 +21,14 @@ class signed_distance_function:
     def semi_circle(self,rx,ry,cx,cy,r,l):
         return max((rx - cx)*cos(r)+(ry - cy)*sin(r),self.circle(rx,ry,cx,cy,l))
 
-    def line(self,pos,ishorizontal,c,l):
-        cpos = [0,0]
-        cpos[ishorizontal] = pos[ishorizontal]
-        cpos[int(not ishorizontal)] = c
-        return max(abs(pos[ishorizontal]),self.circle(pos[0],pos[1],cpos[0],cpos[1],l/2))
+    def line(self,pos,ishorizontal,x,y,l):
+        return max(abs(pos[ishorizontal]-(x if ishorizontal else y)),self.circle(pos[0],pos[1],x,y,l/2))
 
     def objdis(self,obj,rx,ry):
         if obj.type == 1:
             return self.circle(rx,ry,obj.x,obj.y,obj.w)
-        # elif obj.type == 2:
-        #     return self.line(rx if obj.ishorizontal else ry,obj.ishorizontal,obj.c,obj.l)
+        elif obj.type == 2:
+            return self.line(rx,ry,bool(obj.rot),obj.x,obj.y,obj.w)
         if obj.type == 3:
             return self.semi_circle(rx,ry,obj.x,obj.y,obj.rot,obj.w)
         else:

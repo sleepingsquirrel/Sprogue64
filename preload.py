@@ -1,6 +1,6 @@
 import csv
 from world import wall
-from math import sqrt
+from math import sqrt,radians
 import pickle
 
 def preload(map = "map.csv",level_name = "level.spr"):
@@ -23,7 +23,7 @@ def load_csv(map):
 def make_shape(obj):
     match int(obj["id"]):
         case -1:
-            return semicircle_convert(float(obj["x"])/8,float(obj["y"])/8,float(obj["w"])/8,float(obj["r"])/8)
+            return semicircle_convert(float(obj["x"])/8,float(obj["y"])/8,float(obj["w"])/8,radians(float(obj["r"])))
         case 0:
             return circle_convert(float(obj["x"])/8,float(obj["y"])/8,float(obj["w"])/8)
         case 1:
@@ -40,12 +40,13 @@ def semicircle_convert(x,y,w,r):
     return wall(3,r,x,y,w,0)
 
 def line_convert(x1,y1,x2,y2):
-    is_horizontal = int((x1-x2) < (y1-y2))
+    is_horizontal = int(abs(x1-x2) < abs(y1-y2))
     p1 = [x1,y1]
     p2 = [x2,y2]
     mid = [(p1[is_horizontal]+p2[is_horizontal])/2,p1[int(not is_horizontal)]]
     r = abs(p1[is_horizontal]-p2[is_horizontal]) /2
-    return wall(2,is_horizontal,mid[is_horizontal],mid[not is_horizontal],r,None)
+    cx,cy = (x1+x2)/2,(y1+y2)/2
+    return wall(2,is_horizontal,cx,cy,r,None)
 
 def circle_convert(x,y,r):
     return wall(1,0,x,y,r,0)
