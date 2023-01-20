@@ -46,6 +46,8 @@ class renderer:
         self.shader["w"] = int(self.parent.display[0] * 1.1)
         self.shader["h"] = int(self.parent.display[1] * 1.1)
 
+        
+
     
     def make_shaders(self):
         #compile shaders
@@ -56,6 +58,9 @@ class renderer:
         vbo = self.ctx.buffer(np.array((-1,-1,1,1,1,-1,1,1,-1,1,-1,-1), dtype = np.float32).tobytes())
         self.vao = self.ctx.vertex_array(self.shader, vbo, "apos")
         print('shaders: complete')
+
+        self.player_shader = self.ctx.program(vertex_shader = vertex, fragment_shader = fragment)
+        self.player_vao = self.ctx.vertex_array(self.player_shader, vbo, "apos")
         
         # self.len_atlas_loc = self.shader['len_atlas']
         # self.atlas_loc = self.shader['atlas']
