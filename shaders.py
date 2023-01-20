@@ -56,5 +56,15 @@ class shader_storage:
            
         }
     } 
-    
+    '''
+    frag_player = '''
+    #version 330
+    out vec4 FragColor;
+    uniform sampler2D atlas;
+    in vec2 texcoord;
+
+    void main() {
+        vec4 colour = texture(atlas, texcoord);
+        FragColor = colour;
+    }
     '''
