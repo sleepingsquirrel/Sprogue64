@@ -2,8 +2,8 @@ from math import tan
 
 class player:
     def __init__(self):
-        self.x = 60.2
-        self.y = 60.2
+        self.x = 0
+        self.y = 5
         self.gold = 0 
         self.rot = 0
         self.keys = [False, False, False, False, False, False]

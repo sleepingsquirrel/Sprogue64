@@ -60,7 +60,8 @@ class window:
                 
                 
             #render screen
-            self.gl.render()
+            # self.gl.render()
+            self.gl.sdf.sdf()
             #update screen
             pygame.display.flip()
             self.clock.tick(60)

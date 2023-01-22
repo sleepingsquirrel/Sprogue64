@@ -48,7 +48,7 @@ class shader_storage:
             else{
                 vec2 rand = hash22(vec2(round((tex.x+rot)*w)/w,round((tex.y)*h)/h));
                 vec3 col = vec3(0);
-                if (rand.x > 0.99){
+                if (rand.x > 0.999){
                     col = vec3(rand.y);
                 }
                 FragColor = vec4(vec3(col),1.0);
