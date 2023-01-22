@@ -154,7 +154,6 @@ class signed_distance_function:
                 print(slope)
                 out[i][0] = min(int(slope * rrot + start[0]),255)
                 # out[i][0] = ((last[0] - start[0]) / (rrot - start[0])) * (start[1] - last[1]) + start[1]
-
                 
 
         # for i in range(500):
