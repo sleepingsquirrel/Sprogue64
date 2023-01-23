@@ -4,6 +4,7 @@ from math import floor,cos,sin,sqrt,degrees,atan
 import math
 import numpy as np
 import pygame
+from world import wall
 
 #gives data of the height of walls as texture
 class signed_distance_function:
@@ -87,6 +88,15 @@ class signed_distance_function:
                     return min([self.objdis(i) for i in lis])
         return mind
 
+    def line_intersection2(self,x1, y1, x2, y2, x3, y3, x4, y4):
+        a,b,c,d = [x1, y1], [x2, y2], [x3, y3], [x4, y4]
+        t = ((a[0] - c[0]) * (c[1] - d[1]) - (a[1] - c[1]) * (c[0] - d[0])) / ((a[0] - b[0]) * (c[1] - d[1]) - (a[1] - b[1]) * (c[0] - d[0]))
+        u = ((a[0] - c[0]) * (a[1] - b[1]) - (a[1] - c[1]) * (a[0] - b[0])) / ((a[0] - b[0]) * (c[1] - d[1]) - (a[1] - b[1]) * (c[0] - d[0]))
+
+
+        return [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]
+
+
     def line_intersection(self,x1, y1, x2, y2, x3, y3, x4, y4):
         # Calculate the coefficients of the two lines
         a1 = y2 - y1
@@ -114,10 +124,9 @@ class signed_distance_function:
             return [None]
 
 
-
-    def sdf(self):
+    def line(self,line,color):
         p = self.p
-        out = np.zeros((500,4), dtype="uint8")
+        out = np.zeros((500), dtype="uint8")
         rx = self.p.x
         ry = self.p.y
 
@@ -127,33 +136,49 @@ class signed_distance_function:
             rrot = self.p.rot - self.fov / 2 + self.fov * (i/500)
             dis = 1000
             rline = [rx,ry,rx + sin(rrot) * dis,ry + cos(rrot) * dis]
-            li = self.line_intersection(*rline,*[10,10,11,10])
+            li = self.line_intersection(*rline,*line)
             if li[0]:
                 if start == None:
-                    distance = self.length(rx,ry,li[1],li[2]) 
-                    start = [rrot, min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255)]
-                last = [rrot,li]
+                    start = rrot
+                last = rrot
         if last == None:
-            return out
-        li = last[1]
-        distance = self.length(rx,ry,li[1],li[2])
-        last[1] = min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255)
-        
-                
+            return [[0,0,0],out]
+
         for i in range(500):
             rrot = self.p.rot - self.fov / 2 + self.fov * (i/500)
-            if rrot >= start[0] and rrot <= last[0]:
+            if rrot >= start and rrot <= last:
                 # if rrot - start[0] == 0:
                 #     out[i][0] = start[0]
                 #     continue
-                if start[1] == last[1]:
-                    out[i][0] = start[1]
+                rline = [rx,ry,rx + sin(rrot) * dis,ry + cos(rrot) * dis]
+                li = self.line_intersection2(*rline,*line)
+                if li == None:
                     continue
-                print(start,last)
-                slope = (start[1] - last[1])/(last[0] - start[0])
-                print(slope)
-                out[i][0] = min(int(slope * rrot + start[0]),255)
-                # out[i][0] = ((last[0] - start[0]) / (rrot - start[0])) * (start[1] - last[1]) + start[1]
+                distance = self.length(rx,ry,li[0],li[1])
+                out[i] = min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255) 
+        return [color,out]
+
+    def sdf(self):
+        out = np.zeros((500,4), dtype="uint8")
+        self.lines = [wall(10,10,100,100,[1,123,31])]
+        outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.lines]
+        for i in range(500):
+            banana = [[line[1][i],line[0]] for line in outs]
+            maxheight = 0
+            for b in range(len(banana)):
+                if banana[0][b] > banana[maxheight][0]:
+                    maxheight = b
+            out[i][0] = banana[maxheight][0]
+
+            out[i][1] = banana[maxheight][1][0]
+            out[i][2] = banana[maxheight][1][1]
+            out[i][3] = banana[maxheight][1][2]
+                
+
+
+
+
+        # out[i][0] = ((last[0] - start[0]) / (rrot - start[0])) * (start[1] - last[1]) + start[1]
                 
 
         # for i in range(500):

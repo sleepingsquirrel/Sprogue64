@@ -4,14 +4,13 @@ import pickle
 from math import floor
 
 class wall:
-    def __init__(self,wtype,rot,x,y,w,h):
-        self.type = wtype
-        self.rot = rot
+    def __init__(self,x,y,w,h,color):
+
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        
+        self.color = color
         
 
         
