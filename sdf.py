@@ -155,20 +155,22 @@ class signed_distance_function:
                 if li == None:
                     continue
                 distance = self.length(rx,ry,li[0],li[1])
-                out[i] = min(round((40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321))), 255) 
+                out[i] = (40 / distance / cos(rrot - self.p.rot + 0.00001231412341234321)) 
         return [color,out]
 
     def sdf(self):
         out = np.zeros((500,4), dtype="uint8")
-        self.lines = [wall(10,10,100,100,[1,123,31])]
+        self.lines = [wall(10,10,100,100,[1,123,31]),wall(10,11,1,10,[255,123,31])]
         outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.lines]
         for i in range(500):
             banana = [[line[1][i],line[0]] for line in outs]
             maxheight = 0
             for b in range(len(banana)):
-                if banana[0][b] > banana[maxheight][0]:
+                # if banana[b][0] != 0:
+                #     print(banana)
+                if banana[b][0] > banana[maxheight][0]:
                     maxheight = b
-            out[i][0] = banana[maxheight][0]
+            out[i][0] = min(round(banana[maxheight][0]),255)
 
             out[i][1] = banana[maxheight][1][0]
             out[i][2] = banana[maxheight][1][1]

@@ -26,6 +26,8 @@ class renderer:
         self.sdf = signed_distance_function(self.parent)
         self.shaders = shader_storage()
         #pull shaders from shader storage and compile them
+
+        
         self.make_shaders()
         
     def render(self):
@@ -46,7 +48,7 @@ class renderer:
         self.shader["w"] = int(self.parent.display[0] * 1.1)
         self.shader["h"] = int(self.parent.display[1] * 1.1)
 
-        
+
 
     
     def make_shaders(self):
@@ -61,7 +63,10 @@ class renderer:
 
         self.player_shader = self.ctx.program(vertex_shader = vertex, fragment_shader = fragment)
         self.player_vao = self.ctx.vertex_array(self.player_shader, vbo, "apos")
-        
+        # with Image.open("crosshair.png") as img:
+
+
+
         # self.len_atlas_loc = self.shader['len_atlas']
         # self.atlas_loc = self.shader['atlas']
         # self.scale_uniform = self.shader["scale"]
