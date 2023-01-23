@@ -25,7 +25,7 @@ class world:
     chunk_size = 16
     def __init__(self):
         self.map = [[[] for i in range(255)] for _ in range(255)]
-        self.scale = 32
+        self.scale = 16
         self.load_level()
 
     def load_from_file(self):

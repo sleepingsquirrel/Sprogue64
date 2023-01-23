@@ -28,7 +28,7 @@ class signed_distance_function:
         if obj.type == 1:
             return self.circle(rx,ry,obj.x,obj.y,obj.w)
         elif obj.type == 2:
-            return self.line(rx,ry,bool(obj.rot),obj.x,obj.y,obj.w)
+            return self.line([rx,ry],bool(obj.rot),obj.x,obj.y,obj.w)
         if obj.type == 3:
             return self.semi_circle(rx,ry,obj.x,obj.y,obj.rot,obj.w)
         else:
