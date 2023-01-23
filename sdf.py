@@ -39,7 +39,7 @@ class signed_distance_function:
                          
 
     def rdis(self,rx,ry): 
-        world = self.w.map
+        world = self.w.lines
         scale = self.w.scale
         # print(chunk)
         # d = min(rx,ry,scale,abs(rx-15),abs(ry-15))
@@ -160,8 +160,12 @@ class signed_distance_function:
 
     def sdf(self):
         out = np.zeros((500,4), dtype="uint8")
-        self.lines = [wall(10,10,100,100,[1,123,31]),wall(10,11,1,10,[255,123,31])]
-        outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.lines]
+        lines = []
+        for i in range(len(self.w.lines)):
+            rang = 100
+            if self.length(self.p.x,self.p.y,self.w.lines[i][0],self.w.lines[i][1]) < rang or self.length(self.p.x,self.p.y,self.w.lines[i][2],self.w.lines[i][3]) < rang:
+                lines.append(self.w.lines[i])
+        # outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.w.lines]
         for i in range(500):
             banana = [[line[1][i],line[0]] for line in outs]
             maxheight = 0
@@ -176,7 +180,6 @@ class signed_distance_function:
             out[i][2] = banana[maxheight][1][1]
             out[i][3] = banana[maxheight][1][2]
                 
-
 
 
 
