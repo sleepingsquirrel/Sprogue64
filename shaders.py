@@ -39,7 +39,7 @@ class shader_storage:
         //FragColor = vec4(texture(atlas, tex));
         vec4 dat = texture(atlas, tex);
         if (dat.r / 2 > (abs(tex.y - 0.5))) {
-            FragColor = vec4(0.5,0.5,0.5,1.0);
+            FragColor = vec4(dat.yzw,1.0);
         }
         else {
             if (tex.y < 0.5){
@@ -48,7 +48,7 @@ class shader_storage:
             else{
                 vec2 rand = hash22(vec2(round((tex.x+rot)*w)/w,round((tex.y)*h)/h));
                 vec3 col = vec3(0);
-                if (rand.x > 0.99){
+                if (rand.x > 0.999){
                     col = vec3(rand.y);
                 }
                 FragColor = vec4(vec3(col),1.0);

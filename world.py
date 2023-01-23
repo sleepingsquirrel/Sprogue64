@@ -4,14 +4,13 @@ import pickle
 from math import floor
 
 class wall:
-    def __init__(self,wtype,rot,x,y,w,h):
-        self.type = wtype
-        self.rot = rot
+    def __init__(self,x,y,w,h,color):
+
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        
+        self.color = color
         
 
         
@@ -25,7 +24,7 @@ class world:
     chunk_size = 16
     def __init__(self):
         self.map = [[[] for i in range(255)] for _ in range(255)]
-        self.scale = 32
+        self.scale = 16
         self.load_level()
 
     def load_from_file(self):
