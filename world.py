@@ -5,11 +5,11 @@ from math import floor
 
 class wall:
     def __init__(self,x,y,w,h,color):
-
-        self.x = float(x)
-        self.y = float(y)
-        self.w = float(w)
-        self.h = float(h)
+        scale = 4
+        self.x = float(x)/scale
+        self.y = float(y)/scale
+        self.w = float(w)/scale
+        self.h = float(h)/scale
         self.color = color
         
 

@@ -14,7 +14,7 @@ class window:
     display = (500,500)
     fov = math.pi / 2
     def __init__(self):
-        self.player = player()
+        self.player = player(self)
         #grab world gl and player classes
         self.world = world()
         self.gl = renderer(self)
