@@ -46,13 +46,19 @@ class window:
                         self.keys[event.key] = False
             speed = 0.0501
             if(self.keys[K_w]):
+                # if self.player.min_dis(self.gl.sdf.lines) > 0.3:
                 self.player.x += sin(self.player.rot) * speed
                 self.player.y += cos(self.player.rot) * speed
+                self.player.min_dis(self.gl.sdf.lines)
+
             if(self.keys[K_a]):
                 self.player.rot -= 0.1001
             if(self.keys[K_s]):
+                # if self.player.min_dis(self.gl.sdf.lines) > 0.3:
+                
                 self.player.x -= sin(self.player.rot) * speed
                 self.player.y -= cos(self.player.rot) * speed
+                self.player.min_dis(self.gl.sdf.lines)
             if(self.keys[K_d]):
                 self.player.rot += 0.1001
             if (self.keys[K_SPACE]):

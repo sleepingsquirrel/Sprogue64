@@ -1,6 +1,6 @@
 from random import randint
 import numpy as np
-from math import floor,cos,sin,sqrt,degrees,atan
+from math import floor,cos,sin,sqrt,degrees,atan,dist
 import math
 import numpy as np
 import pygame
@@ -16,6 +16,7 @@ class signed_distance_function:
         self.map = [[["no"] for i in range(255)] for _ in range(255)]
 
     def length(self,ax,ay,bx,by):
+        return dist([ax,ay],[bx,by])
         return sqrt((ax-bx)**2 + (ay-by)**2)
 
     def circle(self,ax, ay, bx, by, r):
@@ -162,23 +163,26 @@ class signed_distance_function:
         out = np.zeros((500,4), dtype="uint8")
         self.lines = []
         for i in range(len(self.w.lines)):
-            rang = 100
+            rang = 10
             if self.length(self.p.x,self.p.y,self.w.lines[i].x,self.w.lines[i].y) < rang or self.length(self.p.x,self.p.y,self.w.lines[i].w,self.w.lines[i].h) < rang:
                 self.lines.append(self.w.lines[i])
         outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.lines]
-        for i in range(500):
-            banana = [[line[1][i],line[0]] for line in outs]
-            maxheight = 0
-            for b in range(len(banana)):
-                # if banana[b][0] != 0:
-                #     print(banana)
-                if banana[b][0] > banana[maxheight][0]:
-                    maxheight = b
-            out[i][0] = min(round(banana[maxheight][0]),255)
+        if len(outs):
+            for i in range(500):
+                banana = [[line[1][i],line[0]] for line in outs]
+                maxheight = 0
+                for b in range(len(banana)):
+                    # if banana[b][0] != 0:
+                    #     print(banana)
+                    if banana[b][0] > banana[maxheight][0]:
+                        maxheight = b
 
-            out[i][1] = banana[maxheight][1][0]
-            out[i][2] = banana[maxheight][1][1]
-            out[i][3] = banana[maxheight][1][2]
+
+                out[i][0] = min(round(banana[maxheight][0]),255)
+
+                out[i][1] = banana[maxheight][1][0]
+                out[i][2] = banana[maxheight][1][1]
+                out[i][3] = banana[maxheight][1][2]
                 
 
 

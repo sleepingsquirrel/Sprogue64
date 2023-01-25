@@ -5,7 +5,7 @@ from math import floor
 
 class wall:
     def __init__(self,x,y,w,h,color):
-        scale = 4
+        scale = 8
         self.x = float(x)/scale
         self.y = float(y)/scale
         self.w = float(w)/scale
