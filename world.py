@@ -5,11 +5,11 @@ from math import floor
 
 class wall:
     def __init__(self,x,y,w,h,color):
-        scale = 4
-        self.x = float(x)/scale 
-        self.y = float(y)/scale 
-        self.w = float(w)/scale 
-        self.h = float(h)/scale 
+        scale = 8
+        self.x = float(x)/scale
+        self.y = float(y)/scale
+        self.w = float(w)/scale
+        self.h = float(h)/scale
         self.color = color
         
 
@@ -50,7 +50,7 @@ class world:
         return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
     #for internal use only, use csv_to_bin instead
-    def load_level(self,name = "map.csv"):
+    def load_level(self, name= "map.csv"):
          with open(name) as file:
             reader = csv.DictReader(file)
             for i in reader:
