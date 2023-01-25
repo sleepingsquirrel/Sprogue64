@@ -5,11 +5,11 @@ from math import floor
 
 class wall:
     def __init__(self,x,y,w,h,color):
-
-        self.x = float(x)
-        self.y = float(y)
-        self.w = float(w)
-        self.h = float(h)
+        scale = 4
+        self.x = float(x)/scale 
+        self.y = float(y)/scale 
+        self.w = float(w)/scale 
+        self.h = float(h)/scale 
         self.color = color
         
 
@@ -54,6 +54,7 @@ class world:
          with open(name) as file:
             reader = csv.DictReader(file)
             for i in reader:
+                scale = 2
                 self.lines.append(wall(i["x1"],i["y1"],i["x2"],i["y2"],self.hex_to_rgb(i["colour"])))
         # with open(name, "rb") as level:
         #     retrieved_data = pickle.load(level)

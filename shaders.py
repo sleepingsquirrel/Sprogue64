@@ -42,7 +42,11 @@ class shader_storage:
             FragColor = vec4(dat.yzw,1.0);
         }
         else {
-            if (tex.y < 0.5){
+            float dif = -1.0/50000.0;
+            if (tex.x > 0.5){
+                dif = 0;
+            }
+            if (tex.y + dif <= 0.5){
                 FragColor = vec4(1.0,1.0,1.0,1.0);
             }
             else{

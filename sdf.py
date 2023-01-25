@@ -163,9 +163,9 @@ class signed_distance_function:
         lines = []
         for i in range(len(self.w.lines)):
             rang = 100
-            if self.length(self.p.x,self.p.y,self.w.lines[i][0],self.w.lines[i][1]) < rang or self.length(self.p.x,self.p.y,self.w.lines[i][2],self.w.lines[i][3]) < rang:
+            if self.length(self.p.x,self.p.y,self.w.lines[i].x,self.w.lines[i].y) < rang or self.length(self.p.x,self.p.y,self.w.lines[i].w,self.w.lines[i].h) < rang:
                 lines.append(self.w.lines[i])
-        # outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.w.lines]
+        outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in lines]
         for i in range(500):
             banana = [[line[1][i],line[0]] for line in outs]
             maxheight = 0
