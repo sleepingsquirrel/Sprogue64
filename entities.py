@@ -1,6 +1,8 @@
 from math import sin, cos, atan, dist
 import player
-from pil import Image
+from PIL import Image
+import os
+import numpy as np
 class entity:
     def __init__(self, sprite, x, y, w, h, hp=100):
         self.sprite = open(sprite)
@@ -28,16 +30,22 @@ class entity:
 class texture_atlas:
     def __init__(self,loc):
         
-        for i, filename in enumerate(os.listdir("assets/")):
-            if "." in filename:
-                if filename.split('.')[1] == "gsm":
-                    texlen += 1
-        self.atlas = numpy.zeros(1000*texlen,1000,4)
-        for i, filename in enumerate(os.listdir("assets/")):
-            with Image.open("assets/" + filename) as img:
-                pix = img.load()
-                assert img.size[0] == 1000
-                assert img.size[1] == 1000
-                self.atlas[1000*i:1000*i+1000,0:1000] = pix
+        # texlen = 0
+        # for i, filename in enumerate(os.listdir(loc + "/")):
+        #     if "." in filename:
+        #         texlen += 1
+        # assert texlen > 0
+        # self.atlas = np.zeros((1000*texlen,1000,4), "int8")
+        # for i, filename in enumerate(os.listdir(loc + "/")):
+        #     with Image.open(loc + "/" + filename) as img:
+        #         assert img.size[0] == 1000
+        #         assert img.size[1] == 1000
+        #         for y in range(1000):
+        #             if not y % 10:
+        #                 print(y)
+        #             self.atlas[1000*i:1000*i+1000,y] = np.array(img.getdata())[y*1000:y*1000+1000]
+
+        image = Image.fromarray(self.atlas)
+        image.show()
 
         

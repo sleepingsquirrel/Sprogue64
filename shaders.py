@@ -72,3 +72,66 @@ class shader_storage:
         FragColor = colour;
     }
     '''
+
+    vert_entity = '''
+    #version 330
+    in vec2 tex;
+    uniform vec2 tex_;
+    out vec2 texloc;
+    void main()
+    {
+        gl_Position = vec4(vec2(0,0) - 0.5, 0.1, 1);
+        texloc = tex + tex_;
+    }
+    '''
+    geo_entity  = '''
+    #version 330 core
+    layout (points) in;
+    layout (triangle_strip, max_vertices = 6) out;
+    uniform vec2 len_atlas;
+    uniform vec2 scale;
+    uniform vec3 pos;
+    in vec2 texloc[];
+    out vec4 texcoord;
+    void main()
+    {
+        gl_Position = vec4(1.0, 1.0, 0.0, 0.0);
+        texcoord = vec4(1,1,texloc[0]);
+        EmitVertex();
+        gl_Position = vec4(0.0, 1.0, 0.0, 0.0);
+        texcoord = vec4(0,1,texloc[0]);
+        EmitVertex();
+        gl_Position = vec4(0.0, 0.0, 0.0, 0.0);
+        texcoord = vec4(0,0,texloc[0]);
+        EmitVertex();
+        gl_Position = vec4(1.0, 1.0, 0.0, 0.0);
+        texcoord = vec4(1,1,texloc[0]);
+        EmitVertex();
+        gl_Position = vec4(1.0, 0.0, 0.0, 0.0);
+        texcoord = vec4(1,0,texloc[0]);
+        EmitVertex();
+        gl_Position = vec4(0.0, 0.0, 0.0, 0.0);
+        texcoord = vec4(0,0,texloc[0]);
+        EmitVertex();
+        EndPrimitive();
+    }
+    '''
+    frag_entity = '''
+    #version 330
+    out vec4 FragColor;
+    uniform sampler2D atlas;
+    in vec2 texcoord;
+    uniform vec4 night;
+    vec2 hash22(vec2 p)
+    {
+        p = p*mat2(127.1,311.7,269.5,183.3);
+    	p = -1.0 + 2.0 * fract(sin(p)*43758.5453123);
+    	return sin(p*6.283);
+    }
+    void main() {
+        vec4 colour = texture(atlas, texcoord) * night;
+        if (colour.w > 0)
+        colour += (hash22(texcoord) / 50).x;
+        FragColor = colour;
+    }
+    '''

@@ -28,7 +28,7 @@ class window:
 
         entity_render_dist = 2
         #GET RID OF THIS LATER
-        entities = [entity("Sprite-0001.png", 1, 1, 1, 1)]
+        # entities = [entity("Sprite-0001.png", 1, 1, 1, 1)]
         #GET RID OF THAT LATER
 
         self.f = 0
@@ -65,12 +65,12 @@ class window:
             if (self.keys[K_SPACE]):
                 self.player.shoot(entities)
             
-            for i in entities:
-                if math.dist([i.x, i.y], [self.player.x, self.player.y]) < entity_render_dist:
-                    i.show()
-                    if i.update(self.player):
-                        #self.running = False
-                        pass
+            # for i in entities:
+            #     if math.dist([i.x, i.y], [self.player.x, self.player.y]) < entity_render_dist:
+            #         i.show()
+            #         if i.update(self.player):
+            #             #self.running = False
+            #             pass
                 
                 
             #render screen

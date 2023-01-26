@@ -7,6 +7,7 @@ import numpy as np
 from pygame.locals import *
 from math import floor
 from shaders import shader_storage
+from entities import texture_atlas
 from sdf import signed_distance_function
 import math
 import platform
@@ -18,6 +19,7 @@ class renderer:
         #start pygame
         pygame.init()
         self.parent = parent
+
         #create pygame window
         window = pygame.display.set_mode(self.parent.display, OPENGL|DOUBLEBUF|RESIZABLE, vsync=sys.platform == "linux")
         #start modern gl
@@ -60,6 +62,8 @@ class renderer:
         vbo = self.ctx.buffer(np.array((-1,-1,1,1,1,-1,1,1,-1,1,-1,-1), dtype = np.float32).tobytes())
         self.vao = self.ctx.vertex_array(self.shader, vbo, "apos")
         print('shaders: complete')
+        with Image.open("assets/atlas.png") as img:
+            self.atlas = self.ctx.texture((8000,1000), 4,np.array(img.getdata(),dtype = np.int8).tobytes())
 
         self.player_shader = self.ctx.program(vertex_shader = vertex, fragment_shader = fragment)
         self.player_vao = self.ctx.vertex_array(self.player_shader, vbo, "apos")
