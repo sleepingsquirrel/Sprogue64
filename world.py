@@ -54,6 +54,7 @@ class world:
          with open(name) as file:
             reader = csv.DictReader(file)
             for i in reader:
+                scale = 2
                 self.lines.append(wall(i["x1"],i["y1"],i["x2"],i["y2"],self.hex_to_rgb(i["colour"])))
         # with open(name, "rb") as level:
         #     retrieved_data = pickle.load(level)
