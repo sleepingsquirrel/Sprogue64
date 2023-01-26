@@ -2,6 +2,7 @@ import csv
 from world import wall
 from math import sqrt,radians
 import pickle
+from PIL import Image
 
 def preload(map = "map.csv",level_name = "level.spr"):
     with open(level_name, "wb") as file:
@@ -50,4 +51,5 @@ def line_convert(x1,y1,x2,y2):
 
 def circle_convert(x,y,r):
     return wall(1,0,x,y,r,0)
+    
 preload()
