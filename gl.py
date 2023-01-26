@@ -45,10 +45,12 @@ class renderer:
         # self.tex.anisotropy = 16.0
         self.tex.use(0)
         self.shader["atlas"] = 0
+        # self.shader["framecount"] = self.parent.f
         # self.shader["ppos"] = tuple([self.parent.player.x, self.parent.player.y])
         self.shader["rot"] = self.parent.player.rot
         self.shader["w"] = int(self.parent.display[0] * 1.1)
         self.shader["h"] = int(self.parent.display[1] * 1.1)
+        self.shader["titleon"] = self.parent.titleon
 
 
 
@@ -64,9 +66,13 @@ class renderer:
         print('shaders: complete')
         with Image.open("assets/atlas.png") as img:
             self.atlas = self.ctx.texture((8000,1000), 4,np.array(img.getdata(),dtype = np.int8).tobytes())
+        with Image.open("assets/title.png") as img:
+            self.title = self.ctx.texture((500,500), 4,np.array(img.getdata(),dtype = np.int8).tobytes())
 
         self.player_shader = self.ctx.program(vertex_shader = vertex, fragment_shader = fragment)
         self.player_vao = self.ctx.vertex_array(self.player_shader, vbo, "apos")
+        self.title.use(1)
+        self.shader["title"] = 1
         # with Image.open("crosshair.png") as img:
 
 

@@ -21,6 +21,9 @@ class shader_storage:
     uniform float rot;
     uniform int w;
     uniform int h;
+    uniform bool titleon;
+    uniform float framecount;
+    uniform sampler2D title;
     uniform sampler2D atlas;
     const float fov = 1.0;
 
@@ -36,6 +39,10 @@ class shader_storage:
     }
     void main()
     {
+        if (titleon){
+            FragColor = texture(title, vec2(tex.x,1.0 - tex.y));
+            return;
+        }
         //FragColor = vec4(texture(atlas, tex));
         vec4 dat = texture(atlas, tex);
         if (dat.r / 2 > (abs(tex.y - 0.5))) {
@@ -53,11 +60,11 @@ class shader_storage:
                 vec2 rand = hash22(vec2(round((tex.x+rot)*w)/w,round((tex.y)*h)/h));
                 vec3 col = vec3(0);
                 if (rand.x > 0.999){
-                    col = vec3(rand.y);
+                    //hash22(vec2(coord.x + rot + floor(hash22(coord).x + float(framecount) / 100.0), coord.y)).y;
+                    col = vec3(hash22(vec2(rand.y)).x);
                 }
                 FragColor = vec4(vec3(col),1.0);
             }
-           
         }
     } 
     '''
@@ -92,7 +99,7 @@ class shader_storage:
     uniform vec2 scale;
     uniform vec3 pos;
     in vec2 texloc[];
-    out vec4 texcoord;
+    out float texcoord[5];
     void main()
     {
         gl_Position = vec4(1.0, 1.0, 0.0, 0.0);

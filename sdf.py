@@ -163,7 +163,7 @@ class signed_distance_function:
         out = np.zeros((500,4), dtype="uint8")
         self.lines = []
         for i in range(len(self.w.lines)):
-            rang = 10
+            rang = 15
             if self.length(self.p.x,self.p.y,self.w.lines[i].x,self.w.lines[i].y) < rang or self.length(self.p.x,self.p.y,self.w.lines[i].w,self.w.lines[i].h) < rang:
                 self.lines.append(self.w.lines[i])
         outs = [self.line([i.x,i.y,i.w,i.h],i.color) for i in self.lines]

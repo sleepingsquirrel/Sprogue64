@@ -13,6 +13,7 @@ class window:
     keys = {K_w:False,K_a: False,K_s:False,K_d:False,K_SPACE:False}
     display = (500,500)
     fov = math.pi / 2
+    titleon = True
     def __init__(self):
         self.player = player(self)
         #grab world gl and player classes
@@ -24,6 +25,7 @@ class window:
         self.run()
     
     def run(self):
+
         #frame count
 
         entity_render_dist = 2
@@ -34,6 +36,10 @@ class window:
         self.f = 0
         self.running = True
         while self.running:
+            if self.titleon:
+                for i in self.keys.keys():
+                    if (self.keys[i]):
+                        self.titleon = False
             self.f += 1
             #make the x button quit out of the window
             for event in pygame.event.get():
@@ -62,8 +68,8 @@ class window:
                 self.player.min_dis(self.gl.sdf.lines)
             if(self.keys[K_d]):
                 self.player.rot += 0.1001
-            if (self.keys[K_SPACE]):
-                self.player.shoot(entities)
+            # if (self.keys[K_SPACE]):
+            #     self.player.shoot(entities)
             
             # for i in entities:
             #     if math.dist([i.x, i.y], [self.player.x, self.player.y]) < entity_render_dist:
